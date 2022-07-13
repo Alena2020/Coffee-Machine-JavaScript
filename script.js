@@ -1,16 +1,18 @@
 const input = require('sync-input');
+let mlOfWater = input("Write how many ml of water the coffee machine has:");
+let mlOfMilk = input("Write how many ml of milk the coffee machine has:");
+let gramsOfCoffeeBeans = input("Write how many grams of coffee beans the coffee machine has:");
+let cups = Number(input("Write how many cups of coffee you will need:"));
+let cupsCoffee = Math.min(parseInt(mlOfWater / 200), Math.min(parseInt(mlOfMilk / 50), parseInt(gramsOfCoffeeBeans / 15)));
 
-// console.log(`Starting to make a coffee
-// Grinding coffee beans
-// Boiling water
-// Mixing boiled water with crushed coffee beans
-// Pouring coffee into the cup
-// Pouring some milk into the cup
-// Coffee is ready!`);
+function checkAmount() {
+  if (cupsCoffee === cups) {
+    console.log("Yes, I can make that amount of coffee");  
+  } else if (cupsCoffee - cups >= cups) {
+    console.log(`Yes, I can make that amount of coffee (and even ${cupsCoffee - cups} more than that)`);
+  } else {
+    console.log(`No, I can make only ${cupsCoffee} cups of coffee`);
+  } 
+}
 
-console.log("Write how many cups of coffee you will need:");
-let cups = input();
-console.log(`For ${cups} cups of coffee you will need:
-${cups * 200} ml of water
-${cups * 50} ml of milk
-${cups * 15} g of coffee beans`);
+checkAmount();
