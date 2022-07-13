@@ -1,18 +1,84 @@
 const input = require('sync-input');
-let mlOfWater = input("Write how many ml of water the coffee machine has:");
-let mlOfMilk = input("Write how many ml of milk the coffee machine has:");
-let gramsOfCoffeeBeans = input("Write how many grams of coffee beans the coffee machine has:");
-let cups = Number(input("Write how many cups of coffee you will need:"));
-let cupsCoffee = Math.min(parseInt(mlOfWater / 200), Math.min(parseInt(mlOfMilk / 50), parseInt(gramsOfCoffeeBeans / 15)));
+let mlOfWater = 400;
+let mlOfMilk = 540;
+let gramsOfCoffeeBeans = 120;
+let disposableCups = 9;
+let money = 550;
 
-function checkAmount() {
-  if (cupsCoffee === cups) {
-    console.log("Yes, I can make that amount of coffee");  
-  } else if (cupsCoffee - cups >= cups) {
-    console.log(`Yes, I can make that amount of coffee (and even ${cupsCoffee - cups} more than that)`);
-  } else {
-    console.log(`No, I can make only ${cupsCoffee} cups of coffee`);
+function  printTheStateOfTheCoffeeMachine() {
+  console.log(`The coffee machine has:
+  ${mlOfWater} ml of water
+  ${mlOfMilk} ml of milk
+  ${gramsOfCoffeeBeans} g of coffee beans
+  ${disposableCups} disposable cups
+  $${money} of money`);
+}
+
+function buy() {
+  let typeOfCoffee = Number(input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:"));
+  switch (typeOfCoffee) {
+    case 1:
+      mlOfWater -= 250;
+      gramsOfCoffeeBeans -= 16;
+      disposableCups -= 1;
+      money += 4;      
+      console.log("espresso");
+      break;
+    case 2:
+      mlOfWater -= 350;
+      mlOfMilk -= 75;
+      gramsOfCoffeeBeans -= 20;
+      disposableCups -= 1;
+      money += 7;
+      break;    
+    case 3:
+      mlOfWater -= 200;
+      mlOfMilk -= 100;
+      gramsOfCoffeeBeans -= 12;
+      disposableCups -= 1;
+      money += 6;  
+      break;
+    default:
+      console.log(`Wrong input`);
+      break;
   } 
 }
 
-checkAmount();
+function fill() {
+  console.log("Write how many ml of water you want to add:");
+  mlOfWater += Number(input());
+  console.log("Write how many ml of milk you want to add:");
+  mlOfMilk += Number(input());
+  console.log("Write how many grams of coffee beans you want to add:");
+  gramsOfCoffeeBeans += Number(input());
+  console.log("Write how many disposable coffee cups you want to add:");  
+  disposableCups += Number(input()); 
+}
+
+function take() {
+  console.log(`I gave you $${money}`);
+  money = 0; 
+}
+
+printTheStateOfTheCoffeeMachine();
+
+let action = input("Write action (buy, fill, take):");
+chooseAction(action);
+
+function chooseAction(action) {
+  switch (action) {
+    case "buy":
+      buy();
+      break;
+    case "fill":
+      fill();
+      break;    
+    case "take":
+      take();
+      break;
+    default:
+      console.log(`Unknown input`);
+      break;
+  }
+  printTheStateOfTheCoffeeMachine();  
+}
