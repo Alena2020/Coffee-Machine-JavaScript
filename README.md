@@ -6,4 +6,4 @@ My project from the JetBrains Academy Track: Frontend Developer.
 
 #### - JavaScript
 
-##☕️ Programming a coffee machine simulator.
+## ☕️ Programming a coffee machine simulator. ☕️
