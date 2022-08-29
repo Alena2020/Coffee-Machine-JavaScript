@@ -1,104 +1,74 @@
 const input = require('sync-input');
 
-let mlOfWater = 400;
-let mlOfMilk = 540;
-let gramsOfCoffeeBeans = 120;
-let disposableCups = 9;
-let money = 550;
 let cupsCoffee = 0;
+
+let coffeeMachine = {
+  mlOfWater: 400,
+  mlOfMilk: 540,
+  gramsOfCoffeeBeans: 120,
+  disposableCups: 9,
+  money: 550
+};
 
 let exitStatus = false;
 
 function  printTheStateOfTheCoffeeMachine() {
   console.log(`The coffee machine has:
-  ${mlOfWater} ml of water
-  ${mlOfMilk} ml of milk
-  ${gramsOfCoffeeBeans} g of coffee beans
-  ${disposableCups} disposable cups
-  $${money} of money`);
+  ${coffeeMachine.mlOfWater} ml of water
+  ${coffeeMachine.mlOfMilk} ml of milk
+  ${coffeeMachine.gramsOfCoffeeBeans} g of coffee beans
+  ${coffeeMachine.disposableCups} disposable cups
+  $${coffeeMachine.money} of money`);
+}
+
+function makeCoffee(coffee) {
+  if (cupsCoffee >= 1) {
+        console.log(`I have enough resources, making you a coffee!`);
+        coffeeMachine.mlOfWater -= coffee.mlOfWater;
+        coffeeMachine.mlOfMilk -= coffee.mlOfMilk;
+        coffeeMachine.gramsOfCoffeeBeans -= coffee.gramsOfCoffeeBeans;
+        coffeeMachine.disposableCups -= coffee.disposableCups;
+        coffeeMachine.money += coffee.money;        
+      } else {
+          if (coffeeMachine.disposableCups < 1) {
+            console.log("Sorry, not enough cups!");
+          }
+
+          if (coffeeMachine.mlOfWater < coffee.mlOfWater) {
+            console.log("Sorry, not enough water!");
+          }
+
+          if (coffeeMachine.mlOfMilk < coffee.mlOfMilk) {
+            console.log("Sorry, not enough milk!");
+          }
+
+          if (coffeeMachine.gramsOfCoffeeBeans < coffee.gramsOfCoffeeBeans) {
+            console.log("Sorry, not enough coffee beans!");
+          }
+      }
 }
 
 function buyCoffee() {
+  let espresso = {mlOfWater: 250, mlOfMilk: 0, gramsOfCoffeeBeans: 16, disposableCups: 1, money: 4}
+  let latte = {mlOfWater: 350, mlOfMilk: 75, gramsOfCoffeeBeans: 20, disposableCups: 1, money: 7}
+  let cappuccino = {mlOfWater: 200, mlOfMilk: 100, gramsOfCoffeeBeans: 12, disposableCups: 1, money: 6}
   let typeOfCoffee = Number(input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:"));
   
   switch (typeOfCoffee) {
 
     case 1:
-      cupsCoffee = Math.min(parseInt(mlOfWater / 250), parseInt(gramsOfCoffeeBeans / 16));
-      if (cupsCoffee >= 1) {
-        console.log(`I have enough resources, making you a coffee!`);
-        mlOfWater -= 250;
-        gramsOfCoffeeBeans -= 16;
-        disposableCups -= 1;
-        money += 4;         
-      } else {
-          if (disposableCups < 1) {
-            console.log("Sorry, not enough cups!");
-          }
-
-          if (mlOfWater < 250) {
-            console.log("Sorry, not enough water!");
-          }
-
-          if (gramsOfCoffeeBeans < 16) {
-            console.log("Sorry, not enough coffee beans!");
-          }
-      }   
+      cupsCoffee = Math.min(parseInt(coffeeMachine.mlOfWater / espresso.mlOfWater), parseInt(coffeeMachine.gramsOfCoffeeBeans / espresso.gramsOfCoffeeBeans));
+      makeCoffee(espresso);  
       break;
 
     case 2:
-      cupsCoffee = Math.min(parseInt(mlOfWater / 350), Math.min(parseInt(mlOfMilk / 75), parseInt(gramsOfCoffeeBeans / 20)));
-      if (cupsCoffee >= 1) {
-        console.log(`I have enough resources, making you a coffee!`);
-        mlOfWater -= 350;
-        mlOfMilk -= 75;
-        gramsOfCoffeeBeans -= 20;
-        disposableCups -= 1;
-        money += 7;        
-      } else {
-          if (disposableCups < 1) {
-            console.log("Sorry, not enough cups!");
-          }
-          if (mlOfWater < 350) {
-            console.log("Sorry, not enough water!");
-          }
-
-          if (mlOfMilk < 75) {
-            console.log("Sorry, not enough milk!");
-          }
-
-          if (gramsOfCoffeeBeans < 20) {
-            console.log("Sorry, not enough coffee beans!");
-          }
-      } 
+      cupsCoffee = Math.min(parseInt(coffeeMachine.mlOfWater / latte.mlOfWater), Math.min(parseInt(coffeeMachine.mlOfMilk / latte.mlOfMilk), parseInt(coffeeMachine.gramsOfCoffeeBeans / latte.gramsOfCoffeeBeans)));
+      makeCoffee(latte);
       break;
 
     case 3:
-      cupsCoffee = Math.min(parseInt(mlOfWater / 200), Math.min(parseInt(mlOfMilk / 100), parseInt(gramsOfCoffeeBeans / 12)));
-      if (cupsCoffee >= 1) {
-        console.log(`I have enough resources, making you a coffee!`);
-        mlOfWater -= 200;
-        mlOfMilk -= 100;
-        gramsOfCoffeeBeans -= 12;
-        disposableCups -= 1;
-        money += 6;        
-      } else {
-          if (disposableCups < 1) {
-            console.log("Sorry, not enough cups!");
-          }
-
-          if (mlOfWater < 200) {
-            console.log("Sorry, not enough water!");
-          }
-
-          if (mlOfMilk < 100) {
-            console.log("Sorry, not enough milk!");
-          }
-
-          if (gramsOfCoffeeBeans < 12) {
-            console.log("Sorry, not enough coffee beans!");
-          }
-      }        
+      cupsCoffee = Math.min(parseInt(coffeeMachine.mlOfWater / cappuccino.mlOfWater), Math.min(parseInt(coffeeMachine.mlOfMilk / cappuccino.mlOfMilk), parseInt(coffeeMachine.gramsOfCoffeeBeans / cappuccino.gramsOfCoffeeBeans)));
+      makeCoffee(cappuccino);        
       break;
 
     case "back":
@@ -113,18 +83,18 @@ function buyCoffee() {
 
 function fillTheCoffeeMachine() {
   console.log("Write how many ml of water you want to add:");
-  mlOfWater += Number(input());
+  coffeeMachine.mlOfWater += Number(input());
   console.log("Write how many ml of milk you want to add:");
-  mlOfMilk += Number(input());
+  coffeeMachine.mlOfMilk += Number(input());
   console.log("Write how many grams of coffee beans you want to add:");
-  gramsOfCoffeeBeans += Number(input());
+  coffeeMachine.gramsOfCoffeeBeans += Number(input());
   console.log("Write how many disposable coffee cups you want to add:");  
-  disposableCups += Number(input()); 
+  coffeeMachine.disposableCups += Number(input()); 
 }
 
 function takeMoneyFromCoffeeMachine() {
-  console.log(`I gave you $${money}`);
-  money = 0; 
+  console.log(`I gave you $${coffeeMachine.money}`);
+  coffeeMachine.money = 0; 
 }
 
 function chooseAction() {
